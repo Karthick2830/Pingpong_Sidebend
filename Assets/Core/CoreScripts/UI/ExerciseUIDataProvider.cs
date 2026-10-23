@@ -26,6 +26,7 @@ namespace ExerciseGame.Core.UI
          * - Future exercise testers
          */
         [SerializeField]
+        [UnityEngine.Serialization.FormerlySerializedAs("validationTester")]
         private MonoBehaviour validationTesterComponent;
 
         [SerializeField]

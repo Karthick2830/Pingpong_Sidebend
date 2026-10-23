@@ -181,6 +181,33 @@ namespace ExerciseGame.Exercises.SideBend
             get { return completedReps; }
         }
 
+        /// <summary>
+        /// Raised once when a full bend-and-return cycle is confirmed.
+        /// Argument is the side of the rep: -1 = LEFT, +1 = RIGHT.
+        /// </summary>
+        public event System.Action<int> RepConfirmed;
+
+        /// <summary>
+        /// Already-validated live bend direction (-1 LEFT, +1 RIGHT, 0 none).
+        /// Non-zero only while the committed bend is actively moving out or holding;
+        /// zero while waiting, ready/neutral, returning, or when the pose is invalid.
+        /// </summary>
+        public int ValidatedMoveDirection
+        {
+            get
+            {
+                switch (CurrentState)
+                {
+                    case ExerciseState.Moving:
+                    case ExerciseState.TargetReached:
+                    case ExerciseState.Holding:
+                        return committedDirection;
+                    default:
+                        return 0;
+                }
+            }
+        }
+
 
         // =========================================================
         // INTERNAL STATE
@@ -881,6 +908,8 @@ namespace ExerciseGame.Exercises.SideBend
                         IsRepCompleted = true;
 
                         completedReps++;
+
+                        RepConfirmed?.Invoke(committedDirection);
 
                         if (showDebugLogs)
                         {

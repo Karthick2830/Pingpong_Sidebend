@@ -441,8 +441,17 @@ namespace ExerciseGame.Exercises.Debug
         // GUI
         // =========================================================
 
+        /// <summary>Set false by a host scene (e.g. the ball game) to hide the debug panel.</summary>
+        public bool ShowDebugPanel { get; set; } = true;
+
         private void OnGUI()
         {
+            if (!ShowDebugPanel)
+            {
+                return;
+            }
+
+
             if (poseProvider == null ||
                 sideBendValidator == null)
             {

@@ -29,6 +29,7 @@ namespace ExerciseGame.Core.Exercise
         [Tooltip(
             "Component implementing IExerciseValidator.")]
         [SerializeField]
+        [UnityEngine.Serialization.FormerlySerializedAs("validationTester")]
         private MonoBehaviour validationTesterComponent;
 
 
