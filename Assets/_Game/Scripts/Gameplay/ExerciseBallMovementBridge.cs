@@ -56,6 +56,8 @@ namespace BallCatch.Gameplay
 
         public bool IsConnected => connected;
         public RenderTexture PreviewTexture { get; private set; }
+        /// <summary>True while a person is tracked and pose frames are arriving.</summary>
+        public bool TrackingActive { get; private set; }
         public int CurrentSet => exerciseManager != null ? exerciseManager.CurrentSet : 0;
         public int TotalSets => exerciseManager != null ? exerciseManager.TargetSets : 0;
         public int CurrentReps => exerciseManager != null ? exerciseManager.CurrentRep : 0;
@@ -250,6 +252,9 @@ namespace BallCatch.Gameplay
             if (!connected)
                 return;
 
+            bool poseFresh = IsPoseFresh();
+            TrackingActive = poseFresh;
+
             bool active = gameManager.State == GameState.Playing
                 || gameManager.State == GameState.AttemptTransition;
 
@@ -257,7 +262,7 @@ namespace BallCatch.Gameplay
             SyncSetCounters();
 
             int direction = 0;
-            if (active && exerciseStarted && IsPoseFresh())
+            if (active && exerciseStarted && poseFresh)
             {
                 direction = validator.ValidatedMoveDirection;
                 if (direction == 0)
