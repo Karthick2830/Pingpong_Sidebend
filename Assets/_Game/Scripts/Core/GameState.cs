@@ -8,7 +8,8 @@ namespace BallCatch.Core
         Paused,
         Settings,
         ConfirmReturnToMenu,
-        ExerciseComplete
+        ExerciseComplete,
+        HowToPlay
     }
 
     public enum AttemptResult

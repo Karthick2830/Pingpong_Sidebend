@@ -21,6 +21,7 @@ namespace BallCatch.UI
         [SerializeField] private GameObject settingsPanel;
         [SerializeField] private GameObject confirmPanel;
         [SerializeField] private GameObject resultsPanel;
+        [SerializeField] private GameObject howToPlayPanel;
 
         [Header("HUD")]
         [SerializeField] private Text scoreText;
@@ -86,6 +87,8 @@ namespace BallCatch.UI
             pausePanel.SetActive(state == GameState.Paused);
             settingsPanel.SetActive(state == GameState.Settings);
             confirmPanel.SetActive(state == GameState.ConfirmReturnToMenu);
+            if (howToPlayPanel != null)
+                howToPlayPanel.SetActive(state == GameState.HowToPlay);
             if (resultsPanel != null)
                 resultsPanel.SetActive(state == GameState.ExerciseComplete);
         }

@@ -13,14 +13,14 @@ namespace BallCatch.UI
 
         private void OnEnable()
         {
-            playButton.onClick.AddListener(gameManager.StartNewSession);
+            playButton.onClick.AddListener(gameManager.OpenHowToPlay);
             settingsButton.onClick.AddListener(gameManager.OpenSettings);
             exitButton.onClick.AddListener(Quit);
         }
 
         private void OnDisable()
         {
-            playButton.onClick.RemoveListener(gameManager.StartNewSession);
+            playButton.onClick.RemoveListener(gameManager.OpenHowToPlay);
             settingsButton.onClick.RemoveListener(gameManager.OpenSettings);
             exitButton.onClick.RemoveListener(Quit);
         }

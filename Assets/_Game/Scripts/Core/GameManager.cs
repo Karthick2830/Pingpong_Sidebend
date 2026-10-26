@@ -79,6 +79,15 @@ namespace BallCatch.Core
 
         public void Restart() => StartNewSession();
 
+        /// <summary>Shows the "how to play" panel after Play is pressed; the panel starts the session when done.</summary>
+        public void OpenHowToPlay()
+        {
+            if (State != GameState.MainMenu)
+                return;
+
+            SetState(GameState.HowToPlay);
+        }
+
         public void PauseGame()
         {
             if (State != GameState.Playing && State != GameState.AttemptTransition)
