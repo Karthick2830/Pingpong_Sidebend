@@ -7,7 +7,8 @@ namespace BallCatch.Core
         AttemptTransition,
         Paused,
         Settings,
-        ConfirmReturnToMenu
+        ConfirmReturnToMenu,
+        ExerciseComplete
     }
 
     public enum AttemptResult

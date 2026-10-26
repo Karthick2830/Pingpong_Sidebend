@@ -62,6 +62,17 @@ namespace BallCatch.Gameplay
         public int TotalSets => exerciseManager != null ? exerciseManager.TargetSets : 0;
         public int CurrentReps => exerciseManager != null ? exerciseManager.CurrentRep : 0;
         public int RepsPerSet => exerciseManager != null ? exerciseManager.TargetRepsPerSet : repsPerSet;
+        /// <summary>Sets fully completed so far (all sets once the exercise is complete).</summary>
+        public int CompletedSets
+        {
+            get
+            {
+                if (exerciseManager == null) return 0;
+                return exerciseManager.IsExerciseCompleted
+                    ? exerciseManager.TargetSets
+                    : Mathf.Max(0, exerciseManager.CurrentSet - 1);
+            }
+        }
         public int LeftReps { get; private set; }
         public int RightReps { get; private set; }
         public int RepsPerSide => RepsPerSet / 2;
@@ -261,6 +272,13 @@ namespace BallCatch.Gameplay
             UpdateExerciseLifecycle(active);
             SyncSetCounters();
 
+            // All sets done: hand over to the results panel (the game freezes there; nothing is reset here).
+            if (active && exerciseManager.IsExerciseCompleted)
+            {
+                gameManager.ShowExerciseResults();
+                active = false;
+            }
+
             int direction = 0;
             if (active && exerciseStarted && poseFresh)
             {
@@ -278,7 +296,7 @@ namespace BallCatch.Gameplay
         {
             if (active && !wasGameplayActive)
             {
-                if (!exerciseStarted)
+                if (!exerciseStarted || exerciseManager.IsExerciseCompleted)
                 {
                     exerciseManager.StartExercise();
                     exerciseStarted = true;

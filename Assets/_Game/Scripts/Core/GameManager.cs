@@ -125,12 +125,39 @@ namespace BallCatch.Core
                 SetState(GameState.Paused);
         }
 
+        /// <summary>
+        /// Called when the exercise is finished: freezes the game and shows the results. Does not reset the ball,
+        /// player or score; Retry (<see cref="Restart"/>) and the main menu do that through their normal paths.
+        /// </summary>
+        public void ShowExerciseResults()
+        {
+            if (State != GameState.Playing && State != GameState.AttemptTransition)
+                return;
+
+            CancelPendingTransition();
+            SetState(GameState.ExerciseComplete);
+        }
+
+        /// <summary>Leaves the results panel for the main menu, clearing the session like the pause-menu exit.</summary>
+        public void ReturnToMainMenuFromResults()
+        {
+            if (State != GameState.ExerciseComplete)
+                return;
+
+            EndSessionToMainMenu();
+        }
+
         /// <summary>Ends the current session and clears all active gameplay state.</summary>
         public void ConfirmReturnToMainMenu()
         {
             if (State != GameState.ConfirmReturnToMenu)
                 return;
 
+            EndSessionToMainMenu();
+        }
+
+        private void EndSessionToMainMenu()
+        {
             CancelPendingTransition();
             Score = 0;
             ScoreChanged?.Invoke(Score);
@@ -196,7 +223,7 @@ namespace BallCatch.Core
         private void ApplyState(GameState state)
         {
             bool frozen = state == GameState.Paused || state == GameState.Settings
-                || state == GameState.ConfirmReturnToMenu;
+                || state == GameState.ConfirmReturnToMenu || state == GameState.ExerciseComplete;
             Time.timeScale = frozen ? 0f : 1f;
             player.SetInputEnabled(state == GameState.Playing || state == GameState.AttemptTransition);
         }

@@ -20,6 +20,7 @@ namespace BallCatch.UI
         [SerializeField] private GameObject pausePanel;
         [SerializeField] private GameObject settingsPanel;
         [SerializeField] private GameObject confirmPanel;
+        [SerializeField] private GameObject resultsPanel;
 
         [Header("HUD")]
         [SerializeField] private Text scoreText;
@@ -85,6 +86,8 @@ namespace BallCatch.UI
             pausePanel.SetActive(state == GameState.Paused);
             settingsPanel.SetActive(state == GameState.Settings);
             confirmPanel.SetActive(state == GameState.ConfirmReturnToMenu);
+            if (resultsPanel != null)
+                resultsPanel.SetActive(state == GameState.ExerciseComplete);
         }
 
         private void UpdateScore(int score)
