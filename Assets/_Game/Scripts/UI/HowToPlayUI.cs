@@ -15,6 +15,8 @@ namespace BallCatch.UI
         [SerializeField] private GameManager gameManager;
         [SerializeField] private VideoPlayer videoPlayer;
         [SerializeField] private RawImage videoImage;
+        [SerializeField, Tooltip("Instruction music; routed through the Music mixer group so the settings slider applies.")]
+        private AudioSource instructionMusic;
         [SerializeField] private Text countdownText;
         [SerializeField] private Button skipButton;
         [SerializeField, Min(1f), Tooltip("Seconds before the game starts on its own.")]
@@ -43,6 +45,12 @@ namespace BallCatch.UI
             videoPlayer.prepareCompleted += OnVideoPrepared;
             videoPlayer.errorReceived += OnVideoError;
             videoPlayer.Prepare();
+
+            if (instructionMusic != null)
+            {
+                instructionMusic.time = 0f;
+                instructionMusic.Play();
+            }
         }
 
         private void OnDisable()
@@ -51,6 +59,9 @@ namespace BallCatch.UI
             videoPlayer.prepareCompleted -= OnVideoPrepared;
             videoPlayer.errorReceived -= OnVideoError;
             videoPlayer.Stop();
+
+            if (instructionMusic != null)
+                instructionMusic.Stop();
         }
 
         private static void OnVideoPrepared(VideoPlayer source) => source.Play();
