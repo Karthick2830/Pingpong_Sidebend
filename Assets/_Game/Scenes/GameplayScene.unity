@@ -11302,6 +11302,7 @@ GameObject:
   - component: {fileID: 2131099740}
   - component: {fileID: 2131099739}
   - component: {fileID: 2131099738}
+  - component: {fileID: 2131099741}
   m_Layer: 0
   m_Name: ExerciseBridge
   m_TagString: Untagged
@@ -11358,6 +11359,7 @@ MonoBehaviour:
   skeletonConnectionWidth: 0.1
   repsPerSet: 10
   totalSets: 2
+  followBallSide: 1
   stalePoseSeconds: 0.5
 --- !u!4 &2131099740
 Transform:
@@ -11374,6 +11376,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2131099741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131099737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 199ec1122cb7e5e42b309f61f2bea8cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BallCatch.Audio.ExerciseVoiceGuidance
+  gameManager: {fileID: 424885535}
+  bridge: {fileID: 2131099739}
+  ball: {fileID: 873165371}
+  audioManager: {fileID: 1911008845}
+  jointsVisibleClip: {fileID: 8300000, guid: b875291c36f21d64f9a646ed6029b4c3, type: 3}
+  bendLeftClip: {fileID: 8300000, guid: 7219536d99d99c3458c2c4632bfdf5e4, type: 3}
+  bendRightClip: {fileID: 8300000, guid: 3d37e6c0dae91e34f8f373b8b186630f, type: 3}
+  notTrackedDelay: 1.5
+  jointsRepeatSeconds: 8
 --- !u!1001 &348490249667482111
 PrefabInstance:
   m_ObjectHideFlags: 0

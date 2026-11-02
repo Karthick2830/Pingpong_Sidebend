@@ -36,6 +36,11 @@ namespace BallCatch.Gameplay
         [SerializeField, Min(1), Tooltip("Total sets; 0 keeps the value configured in the tracking scene.")]
         private int totalSets = 0;
 
+        [Header("Required Side")]
+        [SerializeField, Tooltip("The side to bend follows the ball's target side each turn (so the voice, the HUD " +
+                                 "and the validator all agree). Off = alternate sides from the validator settings.")]
+        private bool followBallSide = true;
+
         [Header("Safety")]
         [SerializeField, Min(0.1f), Tooltip("Stop moving if no new pose frame arrives for this many seconds (real time).")]
         private float stalePoseSeconds = 0.5f;
@@ -56,6 +61,10 @@ namespace BallCatch.Gameplay
 
         public bool IsConnected => connected;
         public RenderTexture PreviewTexture { get; private set; }
+        /// <summary>The validator's current state (Waiting when the pose is not ready or not tracked).</summary>
+        public ExerciseState ValidatorState => validator != null ? validator.CurrentState : ExerciseState.Waiting;
+        /// <summary>True when the validator's own readiness check (joints visible, facing the camera) passes.</summary>
+        public bool PoseReady => validator != null && validator.IsPoseReady;
         /// <summary>True while a person is tracked and pose frames are arriving.</summary>
         public bool TrackingActive { get; private set; }
         public int CurrentSet => exerciseManager != null ? exerciseManager.CurrentSet : 0;
@@ -103,6 +112,7 @@ namespace BallCatch.Gameplay
         {
             // Parked fires inside every turn reset (and restart): clear the command and wait for a fresh movement.
             ball.Parked += OnBallParked;
+            ball.Launched += OnBallLaunched;
             gameManager.SessionStarted += OnSessionStarted;
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -110,6 +120,7 @@ namespace BallCatch.Gameplay
         private void OnDisable()
         {
             ball.Parked -= OnBallParked;
+            ball.Launched -= OnBallLaunched;
             gameManager.SessionStarted -= OnSessionStarted;
             SceneManager.sceneLoaded -= OnSceneLoaded;
             Unsubscribe();
@@ -259,6 +270,15 @@ namespace BallCatch.Gameplay
             RightReps = 0;
             observedSet = exerciseManager.CurrentSet;
             suppressUntilNeutral = true;
+        }
+
+        /// <summary>Each launch tells the validator which side the player has to bend for this ball.</summary>
+        private void OnBallLaunched()
+        {
+            if (!followBallSide || validator == null)
+                return;
+
+            validator.SetExpectedDirectionOverride(ball.TargetSide == TargetSide.Left ? -1 : 1);
         }
 
         private void OnBallParked()

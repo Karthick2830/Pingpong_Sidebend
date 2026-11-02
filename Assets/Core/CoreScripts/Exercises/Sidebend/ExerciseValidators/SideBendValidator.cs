@@ -1069,8 +1069,27 @@ namespace ExerciseGame.Exercises.SideBend
         // EXPECTED DIRECTION
         // =========================================================
 
+        /// <summary>
+        /// Lets a host (the ball game) dictate the required side: -1 LEFT, +1 RIGHT, 0 = use the rep mode from
+        /// SideBendSettings. Takes effect immediately; the validator logic itself is unchanged.
+        /// </summary>
+        public void SetExpectedDirectionOverride(int direction)
+        {
+            expectedDirectionOverride = direction < 0 ? -1 : direction > 0 ? 1 : 0;
+            UpdateExpectedDirection();
+        }
+
+        private int expectedDirectionOverride;
+
         private void UpdateExpectedDirection()
         {
+            if (expectedDirectionOverride != 0)
+            {
+                expectedDirection = expectedDirectionOverride;
+                return;
+            }
+
+
             if (settings == null)
             {
                 expectedDirection = 0;
