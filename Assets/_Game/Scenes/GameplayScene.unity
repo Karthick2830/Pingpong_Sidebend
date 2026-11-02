@@ -11332,6 +11332,11 @@ MonoBehaviour:
   trackingStatusText: {fileID: 1872032970}
   directionText: {fileID: 909544632}
   feedbackText: {fileID: 973887626}
+  audioManager: {fileID: 1911008845}
+  repClip: {fileID: 8300000, guid: 41082a1e0a9eb0f44bb816ef6ac2bfb4, type: 3}
+  setClip: {fileID: 8300000, guid: 564e4a48c07b59743bc9ba4b498466d5, type: 3}
+  punchSeconds: 0.4
+  punchScale: 0.45
 --- !u!114 &2131099739
 MonoBehaviour:
   m_ObjectHideFlags: 0
