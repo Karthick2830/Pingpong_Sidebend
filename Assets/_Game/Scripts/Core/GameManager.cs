@@ -32,6 +32,8 @@ namespace BallCatch.Core
         public event Action<GameState> StateChanged;
         public event Action<int> ScoreChanged;
         public event Action<AttemptResult> AttemptResolved;
+        /// <summary>Raised at the end of <see cref="StartNewSession"/> (first play, Restart and Retry).</summary>
+        public event Action SessionStarted;
 
         private void Awake()
         {
@@ -75,6 +77,7 @@ namespace BallCatch.Core
             ball.Park();
             SetState(GameState.Playing);
             ball.Launch(CurrentTarget);
+            SessionStarted?.Invoke();
         }
 
         public void Restart() => StartNewSession();

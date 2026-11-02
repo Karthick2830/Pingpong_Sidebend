@@ -103,12 +103,14 @@ namespace BallCatch.Gameplay
         {
             // Parked fires inside every turn reset (and restart): clear the command and wait for a fresh movement.
             ball.Parked += OnBallParked;
+            gameManager.SessionStarted += OnSessionStarted;
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         private void OnDisable()
         {
             ball.Parked -= OnBallParked;
+            gameManager.SessionStarted -= OnSessionStarted;
             SceneManager.sceneLoaded -= OnSceneLoaded;
             Unsubscribe();
             player.SetExternalMoveDirection(0f);
@@ -240,6 +242,23 @@ namespace BallCatch.Gameplay
         {
             if (validator != null)
                 validator.RepConfirmed -= OnRepConfirmed;
+        }
+
+        /// <summary>
+        /// Every new session (first play, Restart, Retry, Play after the main menu) starts the exercise from
+        /// set 1 / rep 0 again. Per-turn resets do not go through here, so they never touch exercise progress.
+        /// </summary>
+        private void OnSessionStarted()
+        {
+            if (!connected)
+                return;
+
+            exerciseManager.StartExercise();
+            exerciseStarted = true;
+            LeftReps = 0;
+            RightReps = 0;
+            observedSet = exerciseManager.CurrentSet;
+            suppressUntilNeutral = true;
         }
 
         private void OnBallParked()
